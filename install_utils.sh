@@ -9,12 +9,12 @@ whichOrFail(){
     fi
 }
 
-if [ -f "/etc/debian_version" ];
-    PKG_MGR="sudo $(whichOrFail apt-get) install -Y "
+if [ -f "/etc/debian_version" ]; then
+    PKG_MGR="sudo $(whichOrFail apt-get) install --yes "
     echo "Debian-like detected, using the following install command:"
     echo $PKG_MGR
-else if [ "$(grep -Ei 'fedora|redhat' /etc/*release)" ]; then
-    PKG_MGR="sudo $(whichOrFail yum) install -Y"
+elif [ "$(grep -Ei 'fedora|redhat' /etc/*release)" ]; then
+    PKG_MGR="sudo $(whichOrFail yum) install --yes"
     echo "RHEL-like detected, using the following install command:"
     echo $PKG_MGR
 else
@@ -34,7 +34,6 @@ echo -e "\tBackuping original .zshrc"
 mv $HOME/.zshrc $HOME/.zshrc_while_installing_ohmyzsh
 sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 mv $HOME/.zshrc_while_installing_ohmyzsh $HOME/.zshrc 
-omz update
 
 echo "Installing pyenv using the automatic pyenv installer:"
 curl https://pyenv.run | bash
@@ -46,7 +45,7 @@ tar -xzf /tmp/tldr.tar.gz -C /tmp
 sudo mv /tmp/tldr_linux_amd64/tldr /usr/bin/tldr
 rm -rf /tmp/tldr.tar.gz /tmp/tldr_linux_amd64
 echo "Done"
-echo "tldr $(tldr --version)"
+tldr
 
 echo -n "Installing fdfind... "
 wget -O /tmp/fd.tar.gz "https://github.com/sharkdp/fd/releases/download/v8.1.1/fd-v8.1.1-x86_64-unknown-linux-musl.tar.gz" -q
@@ -58,7 +57,7 @@ fd --version
 
 echo -n "Installing exa... "
 wget -O /tmp/exa.zip "https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip" -q
-unzip -q -d /tmp/exa.zip
+unzip -d /tmp/exa.zip > /dev/null 2>&1
 sudo mv /tmp/exa-linux-x86_64 /usr/bin/exa
 rm -rf /tmp/exa.zip
 echo "Done"
