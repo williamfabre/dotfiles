@@ -26,7 +26,7 @@ echo "This needs to run sudo many times for installs"
 sudo echo "Sudo unlocked successfuly"
 
 echo "Installing basic tools to install the rest"
-$PKG_MGR wget curl gzip p7zip-full gpg2
+$PKG_MGR zsh wget curl gzip p7zip-full gpg2
 echo "Done"
 
 echo "Installing oh-my-zsh using the automatic installer:"
@@ -84,3 +84,6 @@ pip3 install -U numpy Pillow scikit-image scikit-learn pandas opencv-python open
 echo "Done"
 
 echo "Everything done installing"
+echo -n "Changing shell to zsh... "
+sudo chsh -s $(which zsh)
+echo "Done"
