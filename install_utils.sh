@@ -12,12 +12,12 @@ whichOrFail(){
 if [ -f "/etc/debian_version" ]; then
     echo "Debian-like detected"
     echo "Installing basic tools to install the rest"
-    sudo apt-get install --yes zsh wget curl gzip p7zip-full gpg
+    sudo apt-get install --yes zsh wget curl gzip p7zip-full gpg tree
     echo "Done"
 elif [ "$(grep -Ei 'fedora|redhat' /etc/*release)" ]; then
     echo "RHEL-like detected"
     echo "Installing basic tools to install the rest"
-    sudo yum install --yes zsh wget curl gzip p7zip-full gpg
+    sudo yum install --yes zsh wget curl gzip p7zip-full gpg tree
     echo "Done"
 else
     echo "Distro not found, please specify a packet manager"
