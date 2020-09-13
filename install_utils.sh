@@ -10,13 +10,15 @@ whichOrFail(){
 }
 
 if [ -f "/etc/debian_version" ]; then
-    PKG_MGR="sudo $(whichOrFail apt-get) install --yes "
-    echo "Debian-like detected, using the following install command:"
-    echo $PKG_MGR
+    echo "Debian-like detected"
+    echo "Installing basic tools to install the rest"
+    sudo apt-get install --yes zsh wget curl gzip p7zip-full gpg2
+    echo "Done"
 elif [ "$(grep -Ei 'fedora|redhat' /etc/*release)" ]; then
-    PKG_MGR="sudo $(whichOrFail yum) install --yes"
-    echo "RHEL-like detected, using the following install command:"
-    echo $PKG_MGR
+    echo "RHEL-like detected"
+    echo "Installing basic tools to install the rest"
+    sudo yum install --yes zsh wget curl gzip p7zip-full gpg2
+    echo "Done"
 else
     echo "Distro not found, please specify a packet manager"
     exit 1
@@ -25,9 +27,6 @@ fi
 echo "This needs to run sudo many times for installs"
 sudo echo "Sudo unlocked successfuly"
 
-echo "Installing basic tools to install the rest"
-$PKG_MGR zsh wget curl gzip p7zip-full gpg2
-echo "Done"
 
 echo "Installing oh-my-zsh using the automatic installer:"
 echo -e "\tBackuping original .zshrc"
