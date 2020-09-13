@@ -56,7 +56,7 @@ fd --version
 
 echo -n "Installing exa... "
 wget -O /tmp/exa.zip "https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip" -q
-unzip -d /tmp/exa.zip > /dev/null 2>&1
+unzip /tmp/exa.zip -d /tmp > /dev/null 2>&1
 sudo mv /tmp/exa-linux-x86_64 /usr/bin/exa
 rm -rf /tmp/exa.zip
 echo "Done"
