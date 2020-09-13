@@ -1,0 +1,31 @@
+## MOTD ##
+
+if [ "$(uname)" = "Darwin" ]; then
+	# Disable macOs "Last login" message at startup
+	[ -f "$HOME/.hushlogin" ] || touch "$HOME/.hushlogin"
+fi
+
+if hash neofetch 2>/dev/null; then
+	if [ "$(uname)" = "Darwin" ]; then
+		neofetch --disable kernel term_font wm de term gpu cpu --ascii_distro mac_small --color_blocks off
+	elif [[ "$(uname -r)" =~ .*arch.* ]]; then
+		neofetch --disable kernel term_font wm de term gpu cpu --ascii_distro arch_small --color_blocks off
+    elif [ -f /boot/grub/grub.cfg ] && grep PureOS /boot/grub/grub.cfg >/dev/null 2>&1; then 
+		neofetch --disable kernel term_font wm de term gpu cpu --ascii_distro pureos --color_blocks off
+	elif [[ "$(uname -a)" =~ .*Debian.* ]]; then
+		neofetch --disable kernel term_font wm de term gpu cpu --ascii_distro debian --color_blocks off
+	elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
+		neofetch --disable kernel term_font wm de term gpu cpu --ascii_distro linux_small --color_blocks off
+	else
+		neofetch --disable kernel term_font wm de term gpu cpu --color_blocks off
+	fi
+	# Clear the 2 lines above (repeat \x1b[1A\x1b[2K for more)
+	printf '\x1b[1A\x1b[2K\x1b[1A\x1b[2K'
+else
+	echo -e  ""
+	echo -e  "\t###############################"
+	echo -e  "\t#   プレゼント・デイ          #"
+	echo -e  "\t#      プレゼント・タイム     #"
+	echo -e  "\t###############################"
+	echo -e  ""
+fi

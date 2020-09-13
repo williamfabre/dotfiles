@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# https://github.com/koekeishiya/yabai/wiki/Configuration
+
+yabai -m config layout                          bsp         # Start up with tiling enabled
+yabai -m config window_topmost                  on          # Floating windows are always on top
+
+# Unmanaged
+yabai -m rule --add app="^System Preferences$"  manage=off border=off
+yabai -m rule --add app="ScreenFlow 9"          manage=off border=off
+

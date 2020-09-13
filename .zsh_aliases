@@ -1,0 +1,255 @@
+# vim:ts=4:sw=4:ai:foldmethod=marker:foldlevel=0:
+# Suffix aliases {{{
+    ## Just map to vim {{{
+        alias -s txt=vim
+        alias -s py=vim
+        alias -s conf=vim
+        alias -s cfg=vim
+        alias -s ini=vim
+        alias -s cpp=vim
+        alias -s c=vim
+        alias -s h=vim
+        alias -s hpp=vim
+        alias -s Makefile=vim
+        alias -s nfo=vim
+        alias -s toml=vim
+    ## }}}
+    
+    ## Just map to open {{{
+        alias -s pdf=open
+    ## }}}
+    ## Special commands {{{
+        alias -s zip=unzipBetter
+        alias -s md=markdownReader
+        alias -s deb="sudo dpkg -i"
+        alias -s tar="tar -xf"
+        alias -s xz="tar -xf"
+        alias -s bz2="tar -xjf"
+        alias -s gz="tar -xzf"
+        alias -s 7z="7za e" 
+        alias -s csv=catCsv
+        # Check for a file with the same name and verify it using GPG
+        alias -s asc=gpg_verify_suffix 
+
+
+        if command -v eog 2>&1 > /dev/null; then
+            alias -s png="eog"
+            alias -s bmp="eog"
+            alias -s jpg="eog"
+            alias -s jpeg="eog"
+            alias -s dng="eog"
+            alias -s tiff="eog"
+            alias -s svg="eog"
+        fi
+    ## }}}
+# }}}
+
+# External program dependant {{{
+    
+    if command -v 7z 2>&1 > /dev/null; then
+        # https://www.maketecheasier.com/simplify-7z-compression-with-bash-aliases/
+        alias 7z5='7z a -r -t7z -m0=lzma2 -mx=9 -myx=9 -mqs=on -ms=on'
+        alias 7z4='7z a -r -t7z -m0=lzma2 -mx=9'
+        alias 7z3='7z a -r -t7z -m0=lzma2 -mx=7'
+        alias 7z2='7z a -r -t7z -m0=lzma2 -mx=5'
+        alias 7z1= '7z a -r -t7z -m0=lzma2 -mx=3'
+        alias 7z0='7z a -r -t7z -m0=lzma2 -mx=1'
+    fi
+    if command -v gpg 2>&1 > /dev/null; then
+        alias gpgList="gpg --list-keys --keyid-format SHORT --with-fingerprint"
+        alias gpgListPriv="gpg -K --keyid-format SHORT --with-fingerprint"
+    fi
+
+    if command -v rg 2>&1 > /dev/null; then
+        alias fastgrep="rg" # I always forget the name of Rip Grep
+    fi
+
+    if command -v exa 2>&1 > /dev/null; then
+        alias ls="exa"
+        alias l="exa"
+    fi
+    if command -v bat 2>&1 > /dev/null; then
+        alias cat="bat"
+    fi
+    if command -v fdfind 2>&1 > /dev/null; then
+        alias fd="fdfind -H"
+    fi
+    if command -v bazelisk 2>&1 > /dev/null; then
+        alias bazel="bazelisk"
+    fi
+    if command -v tldr 2>&1 > /dev/null; then
+        alias oldman="/usr/bin/env man"
+        alias man="tldr"
+    fi
+
+    if command -v gsed 2>&1 > /dev/null; then
+        alias oldsed=$(which sed)
+        alias sed='gsed'
+    fi
+    if command -v shasum 2>&1 > /dev/null; then
+        alias sha512="shasum -a 512"
+        alias sha256="shasum -a 256"
+        alias sha2="shasum -a 256"
+        alias sha1="shasum -a 1"
+    fi
+    if command -v youtube-dl 2>&1 > /dev/null; then
+        alias youtube-dl-bestaudio="youtube-dl --rm-cache-dir --extract-audio --audio-format mp3 --audio-quality 0"
+        alias youtube-dl-playlist="youtube-dl --extract-audio --audio-format mp3 -o \"%(title)s.%(ext)s\""
+    fi
+    if command -v wget 2>&1 > /dev/null; then
+        alias extip="wget -q -O - ipinfo.io/ip"
+    elif command -v curl 2>&1 > /dev/null; then
+        alias extip="curl ipinfo.io/ip 2>/dev/null"
+    else
+        echo "ZSH ALIASES: You're missing both WGET and CURL, like, wtf man ?!"
+    fi
+    
+    if command -v gs 2>&1 > /dev/null; then
+        alias pdfcat="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=out.pdf"
+    fi
+    
+# }}}
+
+# Platform Specific {{{
+
+    if [ "$(uname)" = "Darwin" ]; then
+        alias track44="/usr/bin/open \"https://www.youtube.com/embed/w_wx2jag7xI?autoplay=1\""
+        # Replaces aplay on mac
+        alias aplay="mplayer -cache 1024 -quiet -rawaudio samplesize=1:channels=1:rate=8000 -demuxer rawaudio -"
+        alias corecount="python -c 'import multiprocessing as mp; print(mp.cpu_count())'"
+    fi
+    if [ "$(uname -o)" = "GNU/Linux" ]; then
+        alias corecount="nproc"
+        if command -v xdg-open 2>&1 > /dev/null; then
+            alias open="alternativeOpen"
+        fi
+
+        if command -v xclip 2>&1 > /dev/null; then
+            alias pbcopy="xclip -sel c"
+        fi
+        alias corecount="nproc"
+
+    fi
+# }}}
+
+# Simple aliases {{{
+    
+    alias sudo="sudo env \"PATH=$PATH\""
+    alias srcZshrc="source ~/.zshrc"
+    alias sshAdd="_sshAdd"
+    alias l="ls"
+    alias c='clear; echo -en "\e[1A"; echo -e "\e[0K\r "'
+    alias q='exit'
+    alias py="python2"
+    alias py2="python2"
+    alias py3="python3"
+    alias vim="vim -p"      # Open each file in the command in a new tab
+    alias steam="flatpak run com.valvesoftware.Steam" 
+    alias to_lower="tr '[:upper:]' '[:lower:]'"
+
+# }}}
+
+# Functions {{{
+
+    _sshAdd() {
+        if [ -z ${PRIV_KEY_WITH_PASSPHRASE+x} ]; then
+            echo "ZSHRC:	Private key with passphrase not set under \$PRIV_KEY_WITH_PASSPHRASE"
+        elif [ ! -f "$PRIV_KEY_WITH_PASSPHRASE" ]; then
+            echo "ZSHRC:	Private key with passphrase not found at $PRIV_KEY_WITH_PASSPHRASE"
+        else
+            ssh-add $PRIV_KEY_WITH_PASSPHRASE
+        fi
+    }
+    ## SSH
+
+    _check_tor_ip() {
+        PALETTE_GREEN='\e[32m'
+        PALETTE_RED='\e[31m'
+        PALETTE_RESET='\e[0m'
+        PALETTE_BOLD='\e[1m'
+        PALETTE_UNDERLINED='\e[4m'
+        PALETTE_BLINK='\e[5m'
+        vanillaIp=$(wget -q -O - ipinfo.io/ip)
+        #torIp=$(torsocks wget -q -O - ipinfo.io/ip)
+        torIp=${vanillaIp}
+        if [ "$vanillaIp" == "$torIp" ]; then
+            echo -e "${PALETTE_RED}${PALETTE_BOLD}${PALETTE_UNDERLINED}${PALETTE_BLINK}YOUR IP HAS NOT CHANGED !\n Tor:\t${torIp}\n Base:\t${vanillaIp}"
+        else
+            echo -e "${PALETTE_GREEN}YOUR IP HAS NOT CHANGED !\n Tor:\t${torIp}\n Base:\t${vanillaIp}"
+        fi
+        echo -e "${PALETTE_RESET}"
+    }
+    alias check_tor_ip="_check_tor_ip"
+
+    alternativeOpen() {
+        arguments=$@
+
+        allAreHtml=true
+        for arg in "$arguments"; do
+            if [ "${arg##*.}" != "html" ]; then
+                allAreHtml=false
+                break
+            fi
+        done
+        if $allAreHtml; then
+            declare -a tmpHtmlCopies
+            i=1
+            for arg in "$arguments"; do
+                tmpHtmlCopies[$i]="$HOME/Downloads/${arg##*/}"
+                cp "$1" "$tmpHtmlCopies[$i]"
+            done
+            arguments=${tmpHtmlCopies[@]}
+        fi
+
+        if command -v daemonize 2>&1 > /dev/null; then
+            daemonize /usr/bin/xdg-open $arguments
+        else
+            xdg-open $arguments > /dev/null 2>&1 &
+        fi
+    }
+    markdownReader() {
+        if command -v pandoc 2>&1 > /dev/null; then
+            pandoc -t plain $1 | pager
+        else
+            vim $1
+        fi
+    }
+
+    unzipBetter() {
+        mkdir ${1%.*}
+        unzip -q -u -d ${1%.*} $1
+    }
+
+    catCsv() {
+        column -s, -t < $1 | less -#2 -N -S
+    }
+
+    jsonPrettify() {
+        cat $1 | python -m json.tool > $1.bck;
+        mv $1.bck $1;
+    }
+
+    mk () {
+        mkdir $1 && cd $1
+    }
+
+    fpr() { 
+        flatpak run $(flatpak list --columns application | grep $1 | head -n 1)
+    }
+
+    gpg_verify_suffix() {
+        f=${1%.*} # Without .asc
+        if [ ! -f $f ]; then
+            echo "gpg --verify $1"
+            gpg --verify $1
+        else
+            echo "gpg --verify $1 $f"
+            gpg --verify $1 $f
+        fi
+    }
+# }}}
+
+# Misc {{{
+    alias pi='echo "int a=10000,b,c=2800,d,e,f[2801],g;main(){for(;b-c;)f[b++]=a/5;for(;d=0,g=c*2;c-=14,printf(\"%.4d\",e+d/a),e=d%a)for(b=c;d+=f[b]*a,f[b]=d%--g,d/=g--,--b;d*=b);}"|gcc -xc -o a.out -;./a.out'
+    alias playMusic='echo "g(i,x,t,o){return((3&x&(i*((3&i>>16?\"BY}6YB6%\":\"Qj}6jQ6%\")[t%8]+51)>>o))<<4);}main(){int i,n,s;for(i=0;;i++){putchar(g(i,1,n=i>>14,12)+g(i,s=i>>17,n^i>>13,10)+g(i,s/3,n+((i>>11)%3),10)+g(i,s/5,8+n-((i>>10)%3),9));}}"|gcc -xc -&&./a.out|aplay'
+# }}}
