@@ -134,7 +134,6 @@
 
 # Simple aliases {{{
     
-    alias sudo="sudo env \"PATH=$PATH\""
     alias srcZshrc="source ~/.zshrc"
     alias sshAdd="_sshAdd"
     alias l="ls"
